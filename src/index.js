@@ -1,18 +1,17 @@
 import './style.css';
+import { titleData, lineData, descData, imgData } from './components/data';
 import Animatronix from './components/Animatronix';
 
+const titleAnima = new Animatronix(titleData);
+const lineAnima = new Animatronix(lineData);
+const descAnima = new Animatronix(descData);
+const imgAnima = new Animatronix(imgData);
 
-const title = document.querySelector(".richText__title");
-const playBtn = document.querySelector(".button__play");
-const line = document.querySelector(".richText__separator");
+titleAnima.setHandlers();
+lineAnima.setHandlers();
+descAnima.setHandlers();
+imgAnima.setHandlers();
 
-const myObj = {
-  el: title,
-  type: "fadeInUp",
-  timeout: 3000,
-  delay: 2000,
-  handler: playBtn,
-	easing: 'ease-in-out',
-};
-const myTestObj = new Animatronix(myObj);
-myTestObj.setHandlers();
+
+// const myTestObj = new Animatronix(myObj);
+// myTestObj.setHandlers();
