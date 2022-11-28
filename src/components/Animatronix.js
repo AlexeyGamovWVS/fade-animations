@@ -2,7 +2,7 @@ export default class Animatronix {
   constructor({
     type,
     el,
-    timeout,
+    duration,
     distance = 200,
     easing = "ease",
     display = "block",
@@ -11,11 +11,11 @@ export default class Animatronix {
   }) {
     this._type = type;
     this._el = el;
-    this._timeout = timeout;
+    this._timeout = duration * 1000;
     this._distance = distance;
     this._easing = easing;
     this._display = display;
-    this._delay = delay;
+    this._delay = delay + 10;
     this._handler = handler;
   }
 
@@ -67,6 +67,26 @@ export default class Animatronix {
           this._fadeIn(item);
       }
     });
+  }
+
+  updateData(arg, value) {
+    switch (arg) {
+      case "type":
+        this._type = value;
+        break;
+      case "duration":
+        this._duration = value;
+        break;
+      case "distance":
+        this._distance = value;
+        break;
+      case "easing":
+        this._easing = value;
+        break;
+      case "delay":
+        this._delay = value;
+        break;
+    }
   }
 
   _fadeIn(item) {
@@ -211,7 +231,7 @@ export default class Animatronix {
     setTimeout(() => {
       item.style.transition = `all 0ms`;
     }, this._delay + 1);
-	}
+  }
   _fadeInSizeRight(item) {
     item.style.opacity = 0;
     item.style.transform = `translateX(50%) scaleX(0)`;
@@ -224,5 +244,5 @@ export default class Animatronix {
     setTimeout(() => {
       item.style.transition = `all 0ms`;
     }, this._delay + 1);
-	}
+  }
 }
