@@ -33,8 +33,8 @@ class Animatronix {
         case "fadeInRight":
           this._fadeInRight(item);
           break;
-        case "fadeInTop":
-          this._fadeInTop(item);
+        case "fadeInUp":
+          this._fadeInUp(item);
           break;
         case "fadeInBottom":
           this._fadeInBottom(item);
@@ -48,8 +48,8 @@ class Animatronix {
         case "fadeOutRight":
           this._fadeOutRight(item);
           break;
-        case "fadeOutTop":
-          this._fadeOutTop(item);
+        case "fadeOutUp":
+          this._fadeOutUp(item);
           break;
         case "fadeOutBottom":
           this._fadeOutBottom(item);
@@ -104,9 +104,9 @@ class Animatronix {
       item.style.transition = `all 0ms`;
     }, this._delay + 1);
   }
-  _fadeInTop(item) {
+  _fadeInUp(item) {
     item.style.opacity = 0;
-    item.style.transform = `translateY(${0 - this._distance}px)`;
+    item.style.transform = `translateY(${this._distance}px)`;
     setTimeout(() => {
       item.style.transition = `all ${this._timeout}ms ${this._easing}`;
       item.style.opacity = 1;
@@ -118,7 +118,7 @@ class Animatronix {
   }
   _fadeInBottom(item) {
     item.style.opacity = 0;
-    item.style.transform = `translateY(${this._distance}px)`;
+    item.style.transform = `translateY(${0 - this._distance}px)`;
     setTimeout(() => {
       item.style.transition = `all ${this._timeout}ms ${this._easing}`;
       item.style.opacity = 1;
@@ -162,7 +162,7 @@ class Animatronix {
       item.style.transition = `all 0ms`;
     }, this._delay + 1);
   }
-  _fadeOutTop(item) {
+  _fadeOutUp(item) {
     item.style.opacity = 1;
     item.style.transform = `translateY(${0}px)`;
     setTimeout(() => {
@@ -232,8 +232,8 @@ const playBtn = document.querySelector(".button__play");
 const line = document.querySelector(".richText__separator");
 
 const myObj = {
-  el: line,
-  type: "fadeInSizeCenter",
+  el: title,
+  type: "fadeInUp",
   timeout: 3000,
   delay: 2000,
   handler: playBtn,
