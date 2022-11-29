@@ -1,286 +1,116 @@
 import "./style.css";
-import { titleData, lineData, descData, imgData } from "./components/data";
-import Animatronix from "./components/Animatronix";
 import * as dat from "dat.gui";
+import { getAnimation } from "./getAnimation";
 
-const gui = new dat.GUI();
-const titleFolder = gui.addFolder("Title Animation");
+const UI = {
+  BUTTON_PLAY: document.querySelector(".button__play"),
+  BUTTON_GENERATE: document.querySelector(".generate"),
+  BUTTON_COPY: document.querySelector(".copy"),
+  OUTPUT: document.querySelector(".output"),
 
-const titleControllerType = titleFolder.add(titleData, "type", {
-  "fade-In": "fadeIn",
-  "fade-In-Right": "fadeInRight",
-  "fade-In-Up": "fadeInUp",
-  "fade-In-Bottom": "fadeInBottom",
-  "fade-Out": "fadeOut",
-  "fade-Out-Left": "fadeOutLeft",
-  "fade-Out-Right": "fadeOutRight",
-  "fade-Out-Up": "fadeOutUp",
-  "fade-Out-Bottom": "fadeOutBottom",
-  "fade-In-Size-Center": "fadeInSizeCenter",
-  "fade-In-Size-Left": "fadeInSizeLeft",
-  "fade-In-Size-Right": "fadeInSizeRight",
-});
+  TITLE: document.querySelector(".richText__title"),
+  LINE: document.querySelector(".richText__separator"),
+  DESCRIPTION: document.querySelector(".rishText__subtitle"),
+  IMG: document.querySelector(".richText__img"),
+};
 
-titleControllerType.onChange((value) => {
-  titleData.type = value;
-  titleAnima.updateData("type", value);
-});
+const state = {
+  title: {
+    type: "fadeIn",
+    duration: 1,
+    distance: 100,
+    easing: "ease-in",
+    delay: 0,
+  },
+  description: {
+    type: "fadeIn",
+    duration: 1,
+    distance: 100,
+    easing: "ease-in",
+    delay: 1,
+  },
+  img: {
+    type: "fadeIn",
+    duration: 1,
+    distance: 100,
+    easing: "ease-in",
+    delay: 2,
+  },
+  line: {
+    type: "fadeIn",
+    duration: 1,
+    distance: 100,
+    easing: "ease-in",
+    delay: 3,
+  },
+};
 
-const titleControllerDuration = titleFolder.add(
-  titleData,
-  "duration",
-  0.1,
-  3,
-  0.1
-);
+generateGui(state);
 
-titleControllerDuration.onChange((value) => {
-  titleData.duration = value;
-  titleAnima.updateData("duration", value);
-});
+UI.BUTTON_PLAY.addEventListener("click", playAnimation);
+UI.BUTTON_GENERATE.addEventListener("click", generateOutput);
+UI.BUTTON_COPY.addEventListener("click", copyOutput);
 
-const titleControllerDistance = titleFolder.add(
-  titleData,
-  "distance",
-  10,
-  1000,
-  10
-);
-titleControllerDistance.onChange((value) => {
-  titleData.distance = value;
-  titleAnima.updateData("distance", value);
-});
+function playAnimation() {
+  playAnimationElement(UI.TITLE, state.title);
+  playAnimationElement(UI.DESCRIPTION, state.description);
+  playAnimationElement(UI.LINE, state.line);
+  playAnimationElement(UI.IMG, state.img);
+}
 
-const titleControllerEasing = titleFolder.add(titleData, "easing", [
-  "ease",
-  "ease-in",
-  "ease-out",
-  "ease-in-out",
-]);
+function playAnimationElement(element, stateObj) {
+  const animate = getAnimation(stateObj.type);
+  animate(element, stateObj);
+}
 
-titleControllerEasing.onChange((value) => {
-  titleData.easing = value;
-  titleAnima.updateData("easing", value);
-});
+function generateGui(state) {
+  const gui = new dat.GUI();
+  const titleFolder = gui.addFolder("Title Animation");
+  const lineFolder = gui.addFolder("Line Animation");
+  const descFolder = gui.addFolder("Description Animation");
+  const imgFolder = gui.addFolder("Image Animation");
 
-const titleControllerDelay = titleFolder.add(titleData, "delay", 0, 10000, 100);
-titleControllerDelay.onChange((value) => {
-  titleData.delay = value;
-  titleAnima.updateData("delay", value);
-});
+  addOptionsFolder(titleFolder, state.title);
+  addOptionsFolder(lineFolder, state.line);
+  addOptionsFolder(descFolder, state.description);
+  addOptionsFolder(imgFolder, state.img);
+}
 
-//////////////////
+function addOptionsFolder(folder, stateObj) {
+  folder.add(stateObj, "type", {
+    "fade-In": "fadeIn",
+    "fade-In-Up": "fadeInUp",
+    // "fade-In-Right": "fadeInRight",
+    // "fade-In-Bottom": "fadeInBottom",
+    // "fade-Out": "fadeOut",
+    // "fade-Out-Left": "fadeOutLeft",
+    // "fade-Out-Right": "fadeOutRight",
+    // "fade-Out-Up": "fadeOutUp",
+    // "fade-Out-Bottom": "fadeOutBottom",
+    // "fade-In-Size-Center": "fadeInSizeCenter",
+    // "fade-In-Size-Left": "fadeInSizeLeft",
+    // "fade-In-Size-Right": "fadeInSizeRight",
+  });
 
-const lineFolder = gui.addFolder("Line Animation");
+  folder.add(stateObj, "duration", 0.1, 3, 0.1);
 
-const lineControllerType = lineFolder.add(lineData, "type", {
-  "fade-In": "fadeIn",
-  "fade-In-Right": "fadeInRight",
-  "fade-In-Up": "fadeInUp",
-  "fade-In-Bottom": "fadeInBottom",
-  "fade-Out": "fadeOut",
-  "fade-Out-Left": "fadeOutLeft",
-  "fade-Out-Right": "fadeOutRight",
-  "fade-Out-Up": "fadeOutUp",
-  "fade-Out-Bottom": "fadeOutBottom",
-  "fade-In-Size-Center": "fadeInSizeCenter",
-  "fade-In-Size-Left": "fadeInSizeLeft",
-  "fade-In-Size-Right": "fadeInSizeRight",
-});
+  folder.add(stateObj, "distance", 10, 1000, 10);
 
-lineControllerType.onChange((value) => {
-  lineData.type = value;
-  lineAnima.updateData("type", value);
-});
+  folder.add(stateObj, "easing", {
+    ease: "power1.",
+    "ease-in": "power1.in",
+    "ease-out": "power1.out",
+    "ease-in-out": "power1.inOut",
+  });
 
-const lineControllerDuration = lineFolder.add(
-  lineData,
-  "duration",
-  0.1,
-  3,
-  0.1
-);
+  folder.add(stateObj, "delay", 0, 10000, 100);
+}
 
-lineControllerDuration.onChange((value) => {
-  lineData.duration = value;
-  lineAnima.updateData("duration", value);
-});
+function generateOutput() {
+  const json = JSON.stringify(state);
+  UI.OUTPUT.textContent = json;
+}
 
-const lineControllerDistance = lineFolder.add(
-  lineData,
-  "distance",
-  10,
-  1000,
-  10
-);
-lineControllerDistance.onChange((value) => {
-  lineData.distance = value;
-  lineAnima.updateData("distance", value);
-});
-
-const lineControllerEasing = lineFolder.add(lineData, "easing", [
-  "ease",
-  "ease-in",
-  "ease-out",
-  "ease-in-out",
-]);
-
-lineControllerEasing.onChange((value) => {
-  lineData.easing = value;
-  lineAnima.updateData("easing", value);
-});
-
-const lineControllerDelay = lineFolder.add(lineData, "delay", 0, 10000, 100);
-lineControllerDelay.onChange((value) => {
-  lineData.delay = value;
-  lineAnima.updateData("delay", value);
-});
-
-///////////////////////
-
-const descFolder = gui.addFolder("Description Animation");
-
-const descControllerType = descFolder.add(descData, "type", {
-  "fade-In": "fadeIn",
-  "fade-In-Right": "fadeInRight",
-  "fade-In-Up": "fadeInUp",
-  "fade-In-Bottom": "fadeInBottom",
-  "fade-Out": "fadeOut",
-  "fade-Out-Left": "fadeOutLeft",
-  "fade-Out-Right": "fadeOutRight",
-  "fade-Out-Up": "fadeOutUp",
-  "fade-Out-Bottom": "fadeOutBottom",
-  "fade-In-Size-Center": "fadeInSizeCenter",
-  "fade-In-Size-Left": "fadeInSizeLeft",
-  "fade-In-Size-Right": "fadeInSizeRight",
-});
-
-descControllerType.onChange((value) => {
-  descData.type = value;
-  descAnima.updateData("type", value);
-});
-
-const descControllerDuration = descFolder.add(
-  descData,
-  "duration",
-  0.1,
-  3,
-  0.1
-);
-
-descControllerDuration.onChange((value) => {
-  descData.duration = value;
-  descAnima.updateData("duration", value);
-});
-
-const descControllerDistance = descFolder.add(
-  descData,
-  "distance",
-  10,
-  1000,
-  10
-);
-descControllerDistance.onChange((value) => {
-  descData.distance = value;
-  descAnima.updateData("distance", value);
-});
-
-const descControllerEasing = descFolder.add(descData, "easing", [
-  "ease",
-  "ease-in",
-  "ease-out",
-  "ease-in-out",
-]);
-
-descControllerEasing.onChange((value) => {
-  descData.easing = value;
-  descAnima.updateData("easing", value);
-});
-
-const descControllerDelay = descFolder.add(descData, "delay", 0, 10000, 100);
-descControllerDelay.onChange((value) => {
-  descData.delay = value;
-  descAnima.updateData("delay", value);
-});
-
-//////////////////////
-
-const imgFolder = gui.addFolder("img Animation");
-
-const imgControllerType = imgFolder.add(imgData, "type", {
-  "fade-In": "fadeIn",
-  "fade-In-Right": "fadeInRight",
-  "fade-In-Up": "fadeInUp",
-  "fade-In-Bottom": "fadeInBottom",
-  "fade-Out": "fadeOut",
-  "fade-Out-Left": "fadeOutLeft",
-  "fade-Out-Right": "fadeOutRight",
-  "fade-Out-Up": "fadeOutUp",
-  "fade-Out-Bottom": "fadeOutBottom",
-  "fade-In-Size-Center": "fadeInSizeCenter",
-  "fade-In-Size-Left": "fadeInSizeLeft",
-  "fade-In-Size-Right": "fadeInSizeRight",
-});
-
-imgControllerType.onChange((value) => {
-  imgData.type = value;
-  imgAnima.updateData("type", value);
-});
-
-const imgControllerDuration = imgFolder.add(
-  imgData,
-  "duration",
-  0.1,
-  3,
-  0.1
-);
-
-imgControllerDuration.onChange((value) => {
-  imgData.duration = value;
-  imgAnima.updateData("duration", value);
-});
-
-const imgControllerDistance = imgFolder.add(
-  imgData,
-  "distance",
-  10,
-  1000,
-  10
-);
-imgControllerDistance.onChange((value) => {
-  imgData.distance = value;
-  imgAnima.updateData("distance", value);
-});
-
-const imgControllerEasing = imgFolder.add(imgData, "easing", [
-  "ease",
-  "ease-in",
-  "ease-out",
-  "ease-in-out",
-]);
-
-imgControllerEasing.onChange((value) => {
-  imgData.easing = value;
-  imgAnima.updateData("easing", value);
-});
-
-const imgControllerDelay = imgFolder.add(imgData, "delay", 0, 10000, 100);
-imgControllerDelay.onChange((value) => {
-  imgData.delay = value;
-  imgAnima.updateData("delay", value);
-});
-
-const titleAnima = new Animatronix(titleData);
-const lineAnima = new Animatronix(lineData);
-const descAnima = new Animatronix(descData);
-const imgAnima = new Animatronix(imgData);
-
-titleAnima.setHandlers();
-lineAnima.setHandlers();
-descAnima.setHandlers();
-imgAnima.setHandlers();
-
-titleFolder.open();
-lineFolder.open();
-descFolder.open();
-imgFolder.open();
+function copyOutput() {
+  navigator.clipboard.writeText(JSON.stringify(state));
+}
