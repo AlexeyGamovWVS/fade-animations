@@ -1,7 +1,8 @@
 {
   "dependencies": {
     "core-js": "^3.26.1",
-    "dat.gui": "^0.7.9"
+    "dat.gui": "^0.7.9",
+    "gsap": "^3.11.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.5",
