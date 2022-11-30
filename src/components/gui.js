@@ -38,7 +38,7 @@ function addOptionsFolder(folder, stateItem) {
   folder.add(stateItem, "duration", 0.1, 3, 0.1);
   folder.add(stateItem, "distance", 10, 1000, 10);
   folder.add(stateItem, "easing", {
-    ease: "power1.",
+    "ease": "power1.",
     "ease-in": "power1.in",
     "ease-out": "power1.out",
     "ease-in-out": "power1.inOut",

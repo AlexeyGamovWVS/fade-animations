@@ -1,4 +1,6 @@
 export const UI = {
+  TEXT_SECTION: document.querySelector(".richText"),
+  TROUBLE_SECTION: document.querySelector(".display-trouble"),
   BUTTON_PLAY: document.querySelector(".button__play"),
   BUTTON_GENERATE: document.querySelector(".generate"),
   BUTTON_COPY: document.querySelector(".copy"),
